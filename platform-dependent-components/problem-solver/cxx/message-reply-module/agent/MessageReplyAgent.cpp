@@ -60,7 +60,8 @@ SC_AGENT_IMPLEMENTATION(MessageReplyAgent)
   try
   {
     answerAddr = generateAnswer(messageAddr);
-    utils::GenerationUtils::generateRelationBetween(&m_memoryCtx, actionAddr, answerAddr, scAgentsCommon::CoreKeynodes::nrel_answer);
+    utils::GenerationUtils::generateRelationBetween(
+        &m_memoryCtx, actionAddr, answerAddr, scAgentsCommon::CoreKeynodes::nrel_answer);
   }
   catch (utils::ScException & exception)
   {
@@ -190,8 +191,8 @@ bool MessageReplyAgent::linkIsValid(ScAddr const & linkAddr)
     return false;
   }
 
-  ScIterator3Ptr const conceptTextFileIterator = m_memoryCtx.Iterator3(
-      MessageReplyKeynodes::concept_text_file, ScType::EdgeAccessConstPosPerm, linkAddr);
+  ScIterator3Ptr const conceptTextFileIterator =
+      m_memoryCtx.Iterator3(MessageReplyKeynodes::concept_text_file, ScType::EdgeAccessConstPosPerm, linkAddr);
   if (!conceptTextFileIterator->Next())
   {
     SC_LOG_ERROR("LinkAddr doesn't belong concept_text_file class.");

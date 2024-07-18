@@ -34,6 +34,10 @@ SC_AGENT_IMPLEMENTATION(MessageTopicClassificationAgent)
     return SC_RESULT_ERROR;
   }
 
+  // std::string linkContent;
+  // m_memoryCtx.GetLinkContent(messageAddr, linkContent);
+  // SC_LOG_DEBUG(linkContent);
+
   utils::AgentUtils::finishAgentWork(&m_memoryCtx, actionAddr, answerElements, true);
   SC_LOG_DEBUG("MessageTopicClassificationAgent finished");
   return SC_RESULT_OK;

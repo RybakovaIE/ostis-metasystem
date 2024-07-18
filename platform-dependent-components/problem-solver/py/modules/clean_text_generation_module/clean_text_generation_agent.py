@@ -71,6 +71,8 @@ class CleanTextGenerationAgent(ScAgentClassic):
         if not isinstance(raw_text, str):
             self.logger.error(f'Error: your raw text link must be string type, but text of yours is {type(raw_text)}')
             return ScResult.ERROR_INVALID_TYPE
+        self.logger.info('Raw text:')
+        self.logger.info(raw_text)
 
         # Trying to get clean text        
         try:
@@ -107,7 +109,11 @@ class CleanTextGenerationAgent(ScAgentClassic):
     
     def _get_clean_text(self, raw_text: str, language: str) -> str:
         client = Client()
+        self.logger.info('language')
+        self.logger.info(language)
         messages = [{'role': 'user', 'content': constants.PROMPTS[language].format(raw_text)}]
+        self.logger.info('prompt:')
+        self.logger.info(constants.PROMPTS[language].format(raw_text))
         response = client.chat.completions.create(
             model='gpt-3.5-turbo',
             messages=messages,
@@ -115,4 +121,4 @@ class CleanTextGenerationAgent(ScAgentClassic):
         )
         self.logger.info(f'Successfully cleaned text for you\n: {response}')
         self.logger.info(response.choices[0].message.content)
-        return response.choices[0].message.content      
+        return response.choices[0].message.content   

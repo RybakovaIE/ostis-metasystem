@@ -12,8 +12,8 @@
 namespace messageReplyModuleTest
 {
 ScsLoader loader;
-const std::string TEST_FILES_DIR_PATH = MESSAGE_REPLY_MODULE_TEST_SRC_PATH "/testStructures/";
-const int WAIT_TIME = 5000;
+std::string const TEST_FILES_DIR_PATH = MESSAGE_REPLY_MODULE_TEST_SRC_PATH "/testStructures/";
+int const WAIT_TIME = 5000;
 
 using MessageReplyAgentTest = ScMemoryTest;
 
@@ -44,10 +44,7 @@ bool generatedMessageIsValid(ScMemoryContext * context, ScAddr const & textLinkA
       "_user_message",
       ScType::EdgeAccessVarPosPerm,
       scAgentsCommon::CoreKeynodes::nrel_sc_text_translation);
-  scTemplate.Triple(
-      "_translation_node",
-      ScType::EdgeAccessVarPosPerm,
-      textLinkAddr);
+  scTemplate.Triple("_translation_node", ScType::EdgeAccessVarPosPerm, textLinkAddr);
   ScTemplateSearchResult searchResult;
   context->HelperSearchTemplate(scTemplate, searchResult);
   return searchResult.Size() == 1;
@@ -57,9 +54,7 @@ TEST_F(MessageReplyAgentTest, messageProcessingWithTextLinkSuccessful)
 {
   ScMemoryContext & context = *m_ctx;
 
-  loader.loadScsFile(
-          context,
-          TEST_FILES_DIR_PATH + "replyMessageAgentTextLinkTestStructure.scs");
+  loader.loadScsFile(context, TEST_FILES_DIR_PATH + "replyMessageAgentTextLinkTestStructure.scs");
   initialize();
   SC_AGENT_REGISTER(GenerateReplyMessageAgent)
 
@@ -68,27 +63,21 @@ TEST_F(MessageReplyAgentTest, messageProcessingWithTextLinkSuccessful)
 
   EXPECT_TRUE(utils::AgentUtils::applyAction(&context, test_action_node, WAIT_TIME));
   EXPECT_TRUE(context.HelperCheckEdge(
-          scAgentsCommon::CoreKeynodes::question_finished_successfully,
-          test_action_node,
-          ScType::EdgeAccessConstPosPerm));
+      scAgentsCommon::CoreKeynodes::question_finished_successfully, test_action_node, ScType::EdgeAccessConstPosPerm));
 
-  EXPECT_TRUE(generatedMessageIsValid(&context, utils::IteratorUtils::getAnyByOutRelation(
-          &context,
-          test_action_node,
-          scAgentsCommon::CoreKeynodes::rrel_1)));
+  EXPECT_TRUE(generatedMessageIsValid(
+      &context,
+      utils::IteratorUtils::getAnyByOutRelation(&context, test_action_node, scAgentsCommon::CoreKeynodes::rrel_1)));
 
   SC_AGENT_UNREGISTER(GenerateReplyMessageAgent)
   shutdown();
 }
 
-
 TEST_F(MessageReplyAgentTest, argumentIsNotALink)
 {
   ScMemoryContext & context = *m_ctx;
 
-  loader.loadScsFile(
-      context,
-      TEST_FILES_DIR_PATH + "replyMessageAgentTestStructureFirstArgumentIsNotALink.scs");
+  loader.loadScsFile(context, TEST_FILES_DIR_PATH + "replyMessageAgentTestStructureFirstArgumentIsNotALink.scs");
   initialize();
   SC_AGENT_REGISTER(GenerateReplyMessageAgent)
 
@@ -96,9 +85,7 @@ TEST_F(MessageReplyAgentTest, argumentIsNotALink)
   EXPECT_TRUE(test_action_node.IsValid());
 
   context.CreateEdge(
-      ScType::EdgeAccessConstPosPerm,
-      scAgentsCommon::CoreKeynodes::question_initiated,
-      test_action_node);
+      ScType::EdgeAccessConstPosPerm, scAgentsCommon::CoreKeynodes::question_initiated, test_action_node);
 
   EXPECT_TRUE(utils::AgentUtils::applyAction(&context, test_action_node, WAIT_TIME));
   EXPECT_TRUE(context.HelperCheckEdge(
@@ -114,9 +101,7 @@ TEST_F(MessageReplyAgentTest, linkSpecifiedIncorrectly)
 {
   ScMemoryContext & context = *m_ctx;
 
-  loader.loadScsFile(
-      context,
-      TEST_FILES_DIR_PATH + "replyMessageAgentTestStructureWithIncorrectlySpecifiedLink.scs");
+  loader.loadScsFile(context, TEST_FILES_DIR_PATH + "replyMessageAgentTestStructureWithIncorrectlySpecifiedLink.scs");
   initialize();
   SC_AGENT_REGISTER(GenerateReplyMessageAgent)
 
@@ -124,9 +109,7 @@ TEST_F(MessageReplyAgentTest, linkSpecifiedIncorrectly)
   EXPECT_TRUE(test_action_node.IsValid());
 
   context.CreateEdge(
-      ScType::EdgeAccessConstPosPerm,
-      scAgentsCommon::CoreKeynodes::question_initiated,
-      test_action_node);
+      ScType::EdgeAccessConstPosPerm, scAgentsCommon::CoreKeynodes::question_initiated, test_action_node);
 
   EXPECT_TRUE(utils::AgentUtils::applyAction(&context, test_action_node, WAIT_TIME));
   EXPECT_TRUE(context.HelperCheckEdge(
@@ -138,4 +121,4 @@ TEST_F(MessageReplyAgentTest, linkSpecifiedIncorrectly)
   shutdown();
 }
 
-}//namespace messageReplyModuleTest
+}  // namespace messageReplyModuleTest

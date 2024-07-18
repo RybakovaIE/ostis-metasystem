@@ -69,7 +69,8 @@ void GenerateResponseAgent::attachAnswer(
     ScAddr const & messageAddr,
     ScAddr const & answerAddr)
 {
-  utils::GenerationUtils::generateRelationBetween(&m_memoryCtx, messageAddr, messageAnswer, Keynodes::nrel_reply_structure);
+  utils::GenerationUtils::generateRelationBetween(
+      &m_memoryCtx, messageAddr, messageAnswer, Keynodes::nrel_reply_structure);
   m_memoryCtx.CreateEdge(ScType::EdgeAccessConstPosTemp, answerAddr, messageAnswer);
 }
 
@@ -101,18 +102,15 @@ ScAddr GenerateResponseAgent::FindResponseActionClass(ScAddr const & message)
       ScType::NodeVar >> Constants::actionClassVarName,
       ScType::EdgeAccessVarPosPerm,
       Keynodes::nrel_response_action);
-  responseActionTemplate.Triple(
-      Constants::messageClassVarName,
-      ScType::EdgeAccessVarPosPerm,
-      message);
+  responseActionTemplate.Triple(Constants::messageClassVarName, ScType::EdgeAccessVarPosPerm, message);
 
   m_memoryCtx.HelperSmartSearchTemplate(
-  responseActionTemplate,
-  [&actionClass](ScTemplateResultItem const & resultItem) -> ScTemplateSearchRequest
-  {
-    actionClass = resultItem[Constants::actionClassVarName];
-    return ScTemplateSearchRequest::STOP;
-  });
+      responseActionTemplate,
+      [&actionClass](ScTemplateResultItem const & resultItem) -> ScTemplateSearchRequest
+      {
+        actionClass = resultItem[Constants::actionClassVarName];
+        return ScTemplateSearchRequest::STOP;
+      });
 
   if (!m_memoryCtx.IsElement(actionClass))
     SC_THROW_EXCEPTION(utils::ExceptionItemNotFound, "response action class not found");
