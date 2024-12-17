@@ -10,8 +10,7 @@
 
 namespace verificationModule
 {
-
-class CheckSynonymRelationsAgent : public ScActionInitiatedAgent
+class CheckSynonymClassesAgent : public ScActionInitiatedAgent
 {
 public:
   ScAddr GetActionClass() const override;
@@ -24,18 +23,16 @@ private:
       std::vector<ScAddr> & classObjects,
       std::ofstream & outputFile);
 
-  void createSynonymRelationsInfo(
+  void createSynonymClassesInfo(
       ScAddr & identifier,
       ScAddr & firstSynonym,
       ScAddr & secondSynonym,
       std::ofstream & outputFile);
 
-  void createRelationInfo(
-      ScAddr & relation,
+  void createClassInfo(
+      ScAddr & class,
       std::ofstream & outputFile);
 
-  std::string getRelationClassesString(ScAddr & relation);
-      
   std::vector<std::tuple<ScAddr, ScAddr, ScAddr, ScAddr, ScAddr>> fillFivesVector(ScAddr & classObject);
 
   std::string  findDomainSectionIdtf(ScAddr & object);
@@ -50,10 +47,10 @@ private:
 
   std::ofstream createOutputFile(std::string & stringMainIdtf, ScAddr & classAddr);
 
-  std::vector<ScAddr> createRelationObjectsVector(ScAddr & classAddr);
+  std::vector<ScAddr> createXlassObjectsVector(ScAddr & classAddr);
 
-  std::string getDefinition(ScAddr & relation);
-  
+  std::string getDefinition(ScAddr & class);
+
 };
 
 }  // namespace verificationModule
